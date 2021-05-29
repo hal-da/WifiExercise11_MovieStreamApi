@@ -1,13 +1,10 @@
-import javax.xml.datatype.Duration;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
-     //   Movie xMen = new Movie();
+
 
         Actor evilHector = new Actor("Hector", "Evil");
         Actor orlandoBloom = new Actor("Orlando", "Bloom");
@@ -59,6 +56,7 @@ public class Main {
         //Versuche mit List.of/Set.of/Map.of den Cast zu erstellen und diesen
         //nachträglich zu ändern. Warum geht das nicht?
         //troll.addActor(gandalf);
+
         //weil: Exception in thread "main" java.lang.UnsupportedOperationException
         //	at java.base/java.util.ImmutableCollections.uoe(ImmutableCollections.java:71)
 
@@ -98,8 +96,7 @@ public class Main {
                 .forEach(System.out::println);
 
 
- /*       ! Erzeuge eine Map<Actor, Movie> in der jeweils alle Movies eines Actors zu
-        finden sind.*/
+        //! Erzeuge eine Map<Actor, Movie> in der jeweils alle Movies eines Actors zu finden sind
 
         Map<Actor,List<Movie>> moviesFromActors = allOurMovies
                 .stream()
@@ -122,7 +119,8 @@ public class Main {
         });
         System.out.println("################################");
 
-        List<Actor> acc = allOurMovies.stream()
+        //just to learn how to get a List<Actor> from a Stream<List<Actor>>
+        List<Actor> allActorsFromAllOurMovies = allOurMovies.stream()
             .map(Movie::getCast)
             .flatMap(List::stream)
             .distinct()
