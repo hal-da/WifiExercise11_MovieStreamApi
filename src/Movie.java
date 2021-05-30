@@ -1,11 +1,10 @@
-import java.time.Duration;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
     private String title;
     private Director director;
     List<Actor> cast = new ArrayList<>();
@@ -100,5 +99,10 @@ public class Movie {
     @Override
     public int hashCode() {
         return Objects.hash(title, director, cast, firstScreening, duration, budget);
+    }
+
+    @Override
+    public int compareTo(Movie o) {
+        return firstScreening.compareTo(o.firstScreening);
     }
 }

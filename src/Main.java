@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
@@ -63,7 +64,6 @@ public class Main {
 
         allOurMovies.add(troll);
 
-
         // map,filter, reduce, sorting, allMatch
 
         // Überprüfe ob das Budget aller Filme kleiner als 2.000.000 ist.
@@ -102,7 +102,7 @@ public class Main {
                 .stream()
                 .map(Movie::getCast)
                 .flatMap(List::stream)
-                .distinct()
+                .distinct() // um doppelte keys zu verhindern
                 .collect(
                         Collectors.toMap(
                                 actor -> actor,
@@ -113,9 +113,9 @@ public class Main {
                 );
 
         System.out.println("################################");
-        moviesFromActors.forEach( (k,v) -> {
-            System.out.println(k+" starring in:");
-            System.out.println(v+" \n");
+        moviesFromActors.forEach( (actor,movieList) -> {
+            System.out.println(actor+" starring in:");
+            System.out.println(movieList+" \n");
         });
         System.out.println("################################");
 
@@ -127,7 +127,37 @@ public class Main {
             .peek(System.out::println)
             .collect(Collectors.toList());
 
+/*      Achtung und sorry, die letzte Aufgabe bei Movies ist schwerer als gedacht:Erzeuge eine Map<Actor, Movie> in der jeweils alle Movies eines Actors zu finden sind.
+        Einfach stattdessen eine Map<LocalDate, Movie> erzeugen, wo der Key zum Film der Veröffentlichungstermin ist.
+   */
+
+        TreeMap<LocalDate, Movie> localDateMovieMap = allOurMovies.stream()
+                .collect(Collectors.toMap(
+                    Movie::getFirstScreening,
+                    movie -> movie,
+                    (a,b) -> a,
+                    TreeMap::new
+                    ));
+
+        System.out.println("\nlocal date movie map");
+        localDateMovieMap.forEach((date, movie )-> System.out.println(date +" : " + movie));
+
+        //Bonus: pythagoras
+        List<int[]> pythagoreanTriples = IntStream
+                .rangeClosed(1,100)
+                .boxed()
+                .flatMap(a -> IntStream.rangeClosed(a+1,10000)
+                        .filter(b -> Math.sqrt(a*a+b*b)%1==0)
+                        .sorted()
+                        .limit(1)
+                        .mapToObj((int b) -> new int[]{a,b, (int) Math.sqrt(a*a+b*b)})
+
+                )
+                .collect(Collectors.toList());
+
+        System.out.println("\n Pythagoras Bonus");
+        pythagoreanTriples
+                .forEach(y -> System.out.println(y[0] + "² + " + y[1] + "² = " + y[2] + "²"));
 
     }
-
 }
